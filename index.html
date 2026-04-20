@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FX & METRIC CONVERTER</title>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --brand: #2563eb;
+            --brand-soft: #dbeafe;
+            --dark: #0f172a;
+            --gray-light: #f8fafc;
+            --border: #e2e8f0;
+            --text-main: #1e293b;
+            --text-muted: #64748b;
+        }
+
+        /* Essential alignment fix */
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: #f1f5f9;
+            color: var(--text-main);
+            margin: 0;
+            padding: 40px 20px;
+        }
+
+        .app-container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+
+        header h1 {
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: var(--dark);
+            margin: 0;
+            letter-spacing: -1px;
+            text-transform: uppercase;
+        }
+
+        header h1 span { color: var(--brand); }
+
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(360px, 1fr));
+            gap: 24px;
+        }
+
+        .card {
+            background: white;
+            border-radius: 24px;
+            padding: 24px; /* Reduced slightly for better mobile fit */
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05), 0 10px 15px -3px rgba(0,0,0,0.1);
+            border: 1px solid var(--border);
+            overflow: hidden; /* Prevents children from breaking borders */
+        }
+
+        .card-header {
+            text-align: center;
+            margin-bottom: 24px;
+            padding-bottom: 16px;
+            border-bottom: 1px solid var(--gray-light);
+        }
+
+        .card-header h2 {
+            font-size: 1.2rem;
+            font-weight: 700;
+            margin: 0;
+            color: var(--dark);
+            text-transform: uppercase;
+        }
+
+        .section-tag {
+            font-size: 0.65rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 1.2px;
+            color: var(--brand);
+            background: var(--brand-soft);
+            padding: 4px 12px;
+            border-radius: 20px;
+            display: inline-block;
+            margin-bottom: 15px;
+        }
+
+        .input-stack {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .input-group {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            width: 100%; /* Ensure group takes full width of grid cell */
+        }
+
+        label {
+            font-size: 0.7rem;
+            font-weight: 700;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            white-space: nowrap;
+        }
+
+        input, select {
+            width: 100%; /* Fixes the alignment/overflow issue */
+            padding: 12px;
+            border: 1.5px solid var(--border);
+            border-radius: 10px;
+            font-size: 0.9rem;
+            font-family: inherit;
+            transition: all 0.2s;
+            outline: none;
+            background: white;
+        }
+
+        input:focus {
+            border-color: var(--brand);
+            box-shadow: 0 0 0 3px var(--brand-soft);
+        }
+
+        .fx-display {
+            background: var(--dark);
+            color: white;
+            padding: 20px;
+            border-radius: 16px;
+            text-align: center;
+            margin-top: 15px;
+        }
+
+        .fx-result {
+            font-size: 1.6rem;
+            font-weight: 800;
+            display: block;
+        }
+
+        .btn-convert {
+            background: var(--brand);
+            color: white;
+            border: none;
+            padding: 14px;
+            border-radius: 12px;
+            font-weight: 700;
+            cursor: pointer;
+            width: 100%;
+            margin-top: 10px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .unit-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            width: 100%;
+        }
+
+        @media (max-width: 480px) {
+            .unit-grid { grid-template-columns: 1fr; }
+            header h1 { font-size: 1.8rem; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="app-container">
+    <header>
+        <h1>FX <span>&</span> METRIC CONVERTER</h1>
+        <p style="text-transform: uppercase; font-size: 0.75rem; letter-spacing: 1px;">Global Precision Utility</p>
+    </header>
+
+    <div class="dashboard-grid">
+        <div class="card">
+            <div class="card-header">
+                <h2>FOREX EXCHANGE</h2>
+            </div>
+            <div class="input-stack">
+                <div class="input-group">
+                    <label>AMOUNT</label>
+                    <input type="number" id="amtIn" value="100">
+                </div>
+                <div class="unit-grid">
+                    <div class="input-group">
+                        <label>FROM</label>
+                        <select id="fromCur"></select>
+                    </div>
+                    <div class="input-group">
+                        <label>TO</label>
+                        <select id="toCur"></select>
+                    </div>
+                </div>
+                <button class="btn-convert" onclick="fetchRates()">CONVERT NOW</button>
+                <div class="fx-display">
+                    <span class="fx-result" id="fxOut">---</span>
+                    <small id="fxMeta" style="opacity: 0.7; font-size: 0.7rem;"></small>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-header">
+                <h2>LAND AREA</h2>
+            </div>
+            <div class="section-tag">INDIAN REGIONAL</div>
+            <div class="unit-grid" style="margin-bottom: 20px;">
+                <div class="input-group"><label>GUNTHA</label><input type="number" id="guntha" oninput="landCalc('guntha')"></div>
+                <div class="input-group"><label>BIGHA</label><input type="number" id="bigha" oninput="landCalc('bigha')"></div>
+                <div class="input-group"><label>BISWA</label><input type="number" id="biswa" oninput="landCalc('biswa')"></div>
+                <div class="input-group"><label>KANAL</label><input type="number" id="kanal" oninput="landCalc('kanal')"></div>
+            </div>
+            <div class="section-tag">GLOBAL STANDARDS</div>
+            <div class="unit-grid">
+                <div class="input-group"><label>ACRES</label><input type="number" id="acre" oninput="landCalc('acre')"></div>
+                <div class="input-group"><label>HECTARES</label><input type="number" id="hectare" oninput="landCalc('hectare')"></div>
+                <div class="input-group"><label>SQ. METERS</label><input type="number" id="sqm" oninput="landCalc('sqm')"></div>
+                <div class="input-group"><label>SQ. YARDS</label><input type="number" id="sqy" oninput="landCalc('sqy')"></div>
+                <div class="input-group" style="grid-column: span 2;"><label>SQ. FEET</label><input type="number" id="sqf" oninput="landCalc('sqf')"></div>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-header">
+                <h2>UNIT METRICS</h2>
+            </div>
+            <div class="section-tag">LENGTH / DISTANCE</div>
+            <div class="unit-grid" style="margin-bottom: 20px;">
+                <div class="input-group"><label>INCH (IN)</label><input type="number" id="inch" oninput="uniCalc('inch', 'len')"></div>
+                <div class="input-group"><label>FEET (FT)</label><input type="number" id="feet" oninput="uniCalc('feet', 'len')"></div>
+                <div class="input-group"><label>CM</label><input type="number" id="cm" oninput="uniCalc('cm', 'len')"></div>
+                <div class="input-group"><label>METERS (M)</label><input type="number" id="m" oninput="uniCalc('m', 'len')"></div>
+                <div class="input-group"><label>KM</label><input type="number" id="km" oninput="uniCalc('km', 'len')"></div>
+                <div class="input-group"><label>MILES (MI)</label><input type="number" id="mi" oninput="uniCalc('mi', 'len')"></div>
+            </div>
+            <div class="section-tag">MASS & VOLUME</div>
+            <div class="unit-grid">
+                <div class="input-group"><label>KILOGRAM (KG)</label><input type="number" id="kg" oninput="uniCalc('kg', 'mass')"></div>
+                <div class="input-group"><label>POUND (LB)</label><input type="number" id="lb" oninput="uniCalc('lb', 'mass')"></div>
+                <div class="input-group"><label>LITRE (L)</label><input type="number" id="l" oninput="uniCalc('l', 'vol')"></div>
+                <div class="input-group"><label>GALLON (US)</label><input type="number" id="gal" oninput="uniCalc('gal', 'vol')"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    const currencies = ["USD", "INR", "EUR", "GBP", "JPY", "AUD", "CAD", "CHF", "CNY", "HKD", "NZD", "SEK", "KRW", "SGD", "AED", "SAR", "KWD", "QAR", "ZAR", "PKR", "MYR", "THB", "IDR"];
+
+    window.onload = () => {
+        const fromSel = document.getElementById('fromCur');
+        const toSel = document.getElementById('toCur');
+        currencies.sort().forEach(cur => {
+            fromSel.add(new Option(cur, cur));
+            toSel.add(new Option(cur, cur));
+        });
+        fromSel.value = "INR";
+        toSel.value = "USD";
+    };
+
+    async function fetchRates() {
+        const amt = document.getElementById('amtIn').value;
+        const f = document.getElementById('fromCur').value;
+        const t = document.getElementById('toCur').value;
+        const out = document.getElementById('fxOut');
+        if(!amt) return;
+        out.innerText = "CALCULATING...";
+        try {
+            const r = await fetch(`https://open.er-api.com/v6/latest/${f}`);
+            const d = await r.json();
+            const rate = d.rates[t];
+            out.innerText = `${(amt * rate).toLocaleString(undefined, {minimumFractionDigits: 2})} ${t}`;
+            document.getElementById('fxMeta').innerText = `LIVE RATE: 1 ${f} = ${rate.toFixed(4)} ${t}`;
+        } catch (e) { out.innerText = "OFFLINE"; }
+    }
+
+    const landMap = { guntha:101.17, bigha:2529.28, biswa:126.44, kanal:505.85, acre:4046.86, hectare:10000, sqm:1, sqy:0.8361, sqf:0.0929 };
+    const uniMap = {
+        len: { inch:0.0254, feet:0.3048, cm:0.01, m:1, km:1000, mi:1609.34 },
+        mass: { kg:1, lb:0.453592 },
+        vol: { l:1, gal:3.78541 }
+    };
+
+    function landCalc(id) {
+        const v = parseFloat(document.getElementById(id).value);
+        if(isNaN(v)) return clearSet(Object.keys(landMap));
+        const base = v * landMap[id];
+        Object.keys(landMap).forEach(k => { if(k!==id) document.getElementById(k).value = Number((base/landMap[k]).toPrecision(8)); });
+    }
+
+    function uniCalc(id, cat) {
+        const v = parseFloat(document.getElementById(id).value);
+        const map = uniMap[cat];
+        if(isNaN(v)) return clearSet(Object.keys(map));
+        const base = v * map[id];
+        Object.keys(map).forEach(k => { if(k!==id) document.getElementById(k).value = Number((base/map[k]).toPrecision(8)); });
+    }
+
+    function clearSet(ids) { ids.forEach(id => document.getElementById(id).value = ""); }
+</script>
+
+</body>
+</html>
