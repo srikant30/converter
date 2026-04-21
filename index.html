@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FX & METRIC CONVERTER</title>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&display=swap" rel="stylesheet">
+    <title>FX & METRIC CONVERTER | V9</title>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
     <style>
         :root {
             --brand: #2563eb;
@@ -16,162 +16,88 @@
             --text-muted: #64748b;
         }
 
-        /* Essential alignment fix */
-        * {
-            box-sizing: border-box;
-        }
+        * { box-sizing: border-box; }
 
         body {
             font-family: 'Plus Jakarta Sans', sans-serif;
             background-color: #f1f5f9;
             color: var(--text-main);
             margin: 0;
-            padding: 40px 20px;
+            padding: 20px;
         }
 
-        .app-container {
-            max-width: 1200px;
-            margin: 0 auto;
-        }
+        .app-container { max-width: 1300px; margin: 0 auto; }
 
-        header {
-            text-align: center;
-            margin-bottom: 50px;
-        }
-
-        header h1 {
-            font-size: 2.5rem;
-            font-weight: 800;
-            color: var(--dark);
-            margin: 0;
-            letter-spacing: -1px;
-            text-transform: uppercase;
-        }
-
+        header { text-align: center; margin-bottom: 30px; }
+        header h1 { font-size: 2.2rem; font-weight: 800; color: var(--dark); margin: 0; text-transform: uppercase; letter-spacing: -0.5px; }
         header h1 span { color: var(--brand); }
 
         .dashboard-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(360px, 1fr));
-            gap: 24px;
+            grid-template-columns: repeat(auto-fit, minmax(380px, 1fr));
+            gap: 20px;
         }
 
         .card {
             background: white;
-            border-radius: 24px;
-            padding: 24px; /* Reduced slightly for better mobile fit */
-            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05), 0 10px 15px -3px rgba(0,0,0,0.1);
-            border: 1px solid var(--border);
-            overflow: hidden; /* Prevents children from breaking borders */
-        }
-
-        .card-header {
-            text-align: center;
-            margin-bottom: 24px;
-            padding-bottom: 16px;
-            border-bottom: 1px solid var(--gray-light);
-        }
-
-        .card-header h2 {
-            font-size: 1.2rem;
-            font-weight: 700;
-            margin: 0;
-            color: var(--dark);
-            text-transform: uppercase;
-        }
-
-        .section-tag {
-            font-size: 0.65rem;
-            font-weight: 800;
-            text-transform: uppercase;
-            letter-spacing: 1.2px;
-            color: var(--brand);
-            background: var(--brand-soft);
-            padding: 4px 12px;
             border-radius: 20px;
-            display: inline-block;
-            margin-bottom: 15px;
+            padding: 24px;
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);
+            border: 1px solid var(--border);
+            height: fit-content;
         }
 
-        .input-stack {
-            display: flex;
-            flex-direction: column;
-            gap: 16px;
-        }
+        .card-header { text-align: center; margin-bottom: 20px; border-bottom: 1px solid var(--gray-light); padding-bottom: 12px; }
+        .card-header h2 { font-size: 1rem; font-weight: 800; margin: 0; color: var(--dark); text-transform: uppercase; letter-spacing: 0.5px; }
 
-        .input-group {
+        .tab-wrapper { margin-bottom: 15px; }
+        .tab-bar {
             display: flex;
-            flex-direction: column;
             gap: 6px;
-            width: 100%; /* Ensure group takes full width of grid cell */
+            overflow-x: auto;
+            padding-bottom: 8px;
+            scrollbar-width: none;
         }
-
-        label {
-            font-size: 0.7rem;
-            font-weight: 700;
-            color: var(--text-muted);
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            white-space: nowrap;
-        }
-
-        input, select {
-            width: 100%; /* Fixes the alignment/overflow issue */
-            padding: 12px;
-            border: 1.5px solid var(--border);
+        .tab-bar::-webkit-scrollbar { display: none; }
+        
+        .tab {
+            padding: 6px 12px;
+            background: var(--gray-light);
             border-radius: 10px;
-            font-size: 0.9rem;
-            font-family: inherit;
-            transition: all 0.2s;
-            outline: none;
-            background: white;
-        }
-
-        input:focus {
-            border-color: var(--brand);
-            box-shadow: 0 0 0 3px var(--brand-soft);
-        }
-
-        .fx-display {
-            background: var(--dark);
-            color: white;
-            padding: 20px;
-            border-radius: 16px;
-            text-align: center;
-            margin-top: 15px;
-        }
-
-        .fx-result {
-            font-size: 1.6rem;
-            font-weight: 800;
-            display: block;
-        }
-
-        .btn-convert {
-            background: var(--brand);
-            color: white;
-            border: none;
-            padding: 14px;
-            border-radius: 12px;
+            font-size: 0.65rem;
             font-weight: 700;
             cursor: pointer;
-            width: 100%;
-            margin-top: 10px;
+            white-space: nowrap;
+            color: var(--text-muted);
+            border: 1px solid var(--border);
             text-transform: uppercase;
-            letter-spacing: 1px;
+            transition: 0.2s;
         }
+        .tab.active { background: var(--brand); color: white; border-color: var(--brand); }
 
-        .unit-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 12px;
+        .input-group { display: flex; flex-direction: column; gap: 5px; width: 100%; margin-bottom: 12px; }
+        label { font-size: 0.65rem; font-weight: 800; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; }
+        
+        input, select {
             width: 100%;
+            padding: 10px 14px;
+            border: 1.5px solid var(--border);
+            border-radius: 10px;
+            font-size: 0.95rem;
+            font-family: inherit;
+            outline: none;
+            transition: border 0.2s;
         }
+        input:focus { border-color: var(--brand); box-shadow: 0 0 0 3px var(--brand-soft); }
 
-        @media (max-width: 480px) {
-            .unit-grid { grid-template-columns: 1fr; }
-            header h1 { font-size: 1.8rem; }
-        }
+        .unit-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; width: 100%; }
+        .hidden { display: none; }
+
+        .fx-display { background: var(--dark); color: white; padding: 18px; border-radius: 14px; text-align: center; margin-top: 10px; }
+        .fx-result { font-size: 1.5rem; font-weight: 800; display: block; margin-bottom: 4px; }
+        .btn-convert { background: var(--brand); color: white; border: none; padding: 12px; border-radius: 10px; font-weight: 700; cursor: pointer; width: 100%; text-transform: uppercase; letter-spacing: 0.5px; }
+
+        @media (max-width: 480px) { .unit-grid { grid-template-columns: 1fr; } }
     </style>
 </head>
 <body>
@@ -179,135 +105,179 @@
 <div class="app-container">
     <header>
         <h1>FX <span>&</span> METRIC CONVERTER</h1>
-        <p style="text-transform: uppercase; font-size: 0.75rem; letter-spacing: 1px;">Global Precision Utility</p>
+        <p style="text-transform: uppercase; font-size: 0.7rem; letter-spacing: 1px; color: var(--text-muted);">The Ultimate Conversion Suite</p>
     </header>
 
     <div class="dashboard-grid">
         <div class="card">
-            <div class="card-header">
-                <h2>FOREX EXCHANGE</h2>
+            <div class="card-header"><h2>FOREX EXCHANGE</h2></div>
+            <div class="input-group"><label>AMOUNT</label><input type="number" id="amtIn" value="100"></div>
+            <div class="unit-grid">
+                <div class="input-group"><label>FROM</label><select id="fromCur"></select></div>
+                <div class="input-group"><label>TO</label><select id="toCur"></select></div>
             </div>
-            <div class="input-stack">
-                <div class="input-group">
-                    <label>AMOUNT</label>
-                    <input type="number" id="amtIn" value="100">
+            <button class="btn-convert" onclick="fetchRates()">CALCULATE RATE</button>
+            <div class="fx-display">
+                <span class="fx-result" id="fxOut">---</span>
+                <small id="fxMeta" style="opacity: 0.7; font-size: 0.65rem; text-transform: uppercase;"></small>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-header"><h2>LAND & AREA</h2></div>
+            <div class="tab-wrapper">
+                <div class="tab-bar">
+                    <div class="tab active" onclick="switchTab(this, 'land-reg')">INDIAN REGIONAL</div>
+                    <div class="tab" onclick="switchTab(this, 'land-glob')">GLOBAL STANDARDS</div>
                 </div>
+            </div>
+            
+            <div id="land-reg" class="tab-content">
                 <div class="unit-grid">
-                    <div class="input-group">
-                        <label>FROM</label>
-                        <select id="fromCur"></select>
-                    </div>
-                    <div class="input-group">
-                        <label>TO</label>
-                        <select id="toCur"></select>
-                    </div>
+                    <div class="input-group"><label>GUNTHA</label><input type="number" id="guntha" oninput="landCalc('guntha')"></div>
+                    <div class="input-group"><label>BIGHA</label><input type="number" id="bigha" oninput="landCalc('bigha')"></div>
+                    <div class="input-group"><label>BISWA</label><input type="number" id="biswa" oninput="landCalc('biswa')"></div>
+                    <div class="input-group"><label>KANAL</label><input type="number" id="kanal" oninput="landCalc('kanal')"></div>
+                    <div class="input-group"><label>CENT</label><input type="number" id="cent" oninput="landCalc('cent')"></div>
+                    <div class="input-group"><label>GROUND</label><input type="number" id="ground" oninput="landCalc('ground')"></div>
                 </div>
-                <button class="btn-convert" onclick="fetchRates()">CONVERT NOW</button>
-                <div class="fx-display">
-                    <span class="fx-result" id="fxOut">---</span>
-                    <small id="fxMeta" style="opacity: 0.7; font-size: 0.7rem;"></small>
+            </div>
+
+            <div id="land-glob" class="tab-content hidden">
+                <div class="unit-grid">
+                    <div class="input-group"><label>ACRES</label><input type="number" id="acre" oninput="landCalc('acre')"></div>
+                    <div class="input-group"><label>HECTARES</label><input type="number" id="hectare" oninput="landCalc('hectare')"></div>
+                    <div class="input-group"><label>SQ. METERS</label><input type="number" id="sqm" oninput="landCalc('sqm')"></div>
+                    <div class="input-group"><label>SQ. YARDS</label><input type="number" id="sqy" oninput="landCalc('sqy')"></div>
+                    <div class="input-group" style="grid-column: span 2;"><label>SQ. FEET</label><input type="number" id="sqf" oninput="landCalc('sqf')"></div>
                 </div>
             </div>
         </div>
 
         <div class="card">
-            <div class="card-header">
-                <h2>LAND AREA</h2>
+            <div class="card-header"><h2>SCIENCE & DAILY</h2></div>
+            <div class="tab-wrapper">
+                <div class="tab-bar">
+                    <div class="tab active" onclick="switchTab(this, 'sci-phys')">POWER/PRESS</div>
+                    <div class="tab" onclick="switchTab(this, 'sci-basic')">BASIC UNITS</div>
+                    <div class="tab" onclick="switchTab(this, 'sci-daily')">DAILY/TIME</div>
+                </div>
             </div>
-            <div class="section-tag">INDIAN REGIONAL</div>
-            <div class="unit-grid" style="margin-bottom: 20px;">
-                <div class="input-group"><label>GUNTHA</label><input type="number" id="guntha" oninput="landCalc('guntha')"></div>
-                <div class="input-group"><label>BIGHA</label><input type="number" id="bigha" oninput="landCalc('bigha')"></div>
-                <div class="input-group"><label>BISWA</label><input type="number" id="biswa" oninput="landCalc('biswa')"></div>
-                <div class="input-group"><label>KANAL</label><input type="number" id="kanal" oninput="landCalc('kanal')"></div>
-            </div>
-            <div class="section-tag">GLOBAL STANDARDS</div>
-            <div class="unit-grid">
-                <div class="input-group"><label>ACRES</label><input type="number" id="acre" oninput="landCalc('acre')"></div>
-                <div class="input-group"><label>HECTARES</label><input type="number" id="hectare" oninput="landCalc('hectare')"></div>
-                <div class="input-group"><label>SQ. METERS</label><input type="number" id="sqm" oninput="landCalc('sqm')"></div>
-                <div class="input-group"><label>SQ. YARDS</label><input type="number" id="sqy" oninput="landCalc('sqy')"></div>
-                <div class="input-group" style="grid-column: span 2;"><label>SQ. FEET</label><input type="number" id="sqf" oninput="landCalc('sqf')"></div>
-            </div>
-        </div>
 
-        <div class="card">
-            <div class="card-header">
-                <h2>UNIT METRICS</h2>
+            <div id="sci-phys" class="tab-content">
+                <label class="section-label" style="display:block; margin-bottom:5px; font-size:0.6rem; color:var(--brand)">POWER & ENERGY</label>
+                <div class="unit-grid" style="margin-bottom:15px;">
+                    <div class="input-group"><label>WATTS</label><input type="number" id="watts" oninput="uniCalc('watts','power')"></div>
+                    <div class="input-group"><label>HORSEPOWER</label><input type="number" id="hp" oninput="uniCalc('hp','power')"></div>
+                    <div class="input-group"><label>JOULES</label><input type="number" id="joule" oninput="uniCalc('joule','power')"></div>
+                    <div class="input-group"><label>KWH</label><input type="number" id="kwh" oninput="uniCalc('kwh','power')"></div>
+                </div>
+                <label class="section-label" style="display:block; margin-bottom:5px; font-size:0.6rem; color:var(--brand)">PRESSURE</label>
+                <div class="unit-grid">
+                    <div class="input-group"><label>PSI</label><input type="number" id="psi" oninput="uniCalc('psi','press')"></div>
+                    <div class="input-group"><label>BAR</label><input type="number" id="bar" oninput="uniCalc('bar','press')"></div>
+                    <div class="input-group"><label>PASCAL</label><input type="number" id="pascal" oninput="uniCalc('pascal','press')"></div>
+                    <div class="input-group"><label>ATM</label><input type="number" id="atm" oninput="uniCalc('atm','press')"></div>
+                </div>
             </div>
-            <div class="section-tag">LENGTH / DISTANCE</div>
-            <div class="unit-grid" style="margin-bottom: 20px;">
-                <div class="input-group"><label>INCH (IN)</label><input type="number" id="inch" oninput="uniCalc('inch', 'len')"></div>
-                <div class="input-group"><label>FEET (FT)</label><input type="number" id="feet" oninput="uniCalc('feet', 'len')"></div>
-                <div class="input-group"><label>CM</label><input type="number" id="cm" oninput="uniCalc('cm', 'len')"></div>
-                <div class="input-group"><label>METERS (M)</label><input type="number" id="m" oninput="uniCalc('m', 'len')"></div>
-                <div class="input-group"><label>KM</label><input type="number" id="km" oninput="uniCalc('km', 'len')"></div>
-                <div class="input-group"><label>MILES (MI)</label><input type="number" id="mi" oninput="uniCalc('mi', 'len')"></div>
+
+            <div id="sci-basic" class="tab-content hidden">
+                <div class="unit-grid">
+                    <div class="input-group"><label>INCH</label><input type="number" id="inch" oninput="uniCalc('inch','len')"></div>
+                    <div class="input-group"><label>METERS</label><input type="number" id="m" oninput="uniCalc('m','len')"></div>
+                    <div class="input-group"><label>KG</label><input type="number" id="kg" oninput="uniCalc('kg','mass')"></div>
+                    <div class="input-group"><label>TOLA (GOLD)</label><input type="number" id="tola" oninput="uniCalc('tola','mass')"></div>
+                    <div class="input-group"><label>LITRE</label><input type="number" id="l" oninput="uniCalc('l','vol')"></div>
+                    <div class="input-group"><label>GALLON</label><input type="number" id="gal" oninput="uniCalc('gal','vol')"></div>
+                </div>
             </div>
-            <div class="section-tag">MASS & VOLUME</div>
-            <div class="unit-grid">
-                <div class="input-group"><label>KILOGRAM (KG)</label><input type="number" id="kg" oninput="uniCalc('kg', 'mass')"></div>
-                <div class="input-group"><label>POUND (LB)</label><input type="number" id="lb" oninput="uniCalc('lb', 'mass')"></div>
-                <div class="input-group"><label>LITRE (L)</label><input type="number" id="l" oninput="uniCalc('l', 'vol')"></div>
-                <div class="input-group"><label>GALLON (US)</label><input type="number" id="gal" oninput="uniCalc('gal', 'vol')"></div>
+
+            <div id="sci-daily" class="tab-content hidden">
+                <label class="section-label" style="display:block; margin-bottom:5px; font-size:0.6rem; color:var(--brand)">TIME</label>
+                <div class="unit-grid" style="margin-bottom:15px;">
+                    <div class="input-group"><label>SECONDS</label><input type="number" id="sec" oninput="uniCalc('sec','time')"></div>
+                    <div class="input-group"><label>MINUTES</label><input type="number" id="min" oninput="uniCalc('min','time')"></div>
+                    <div class="input-group"><label>HOURS</label><input type="number" id="hour" oninput="uniCalc('hour','time')"></div>
+                    <div class="input-group"><label>DAYS</label><input type="number" id="day" oninput="uniCalc('day','time')"></div>
+                </div>
+                <label class="section-label" style="display:block; margin-bottom:5px; font-size:0.6rem; color:var(--brand)">MISC</label>
+                <div class="unit-grid">
+                    <div class="input-group"><label>TEMP °C</label><input type="number" id="c" oninput="tempCalc('c')"></div>
+                    <div class="input-group"><label>TEMP °F</label><input type="number" id="f" oninput="tempCalc('f')"></div>
+                    <div class="input-group"><label>DATA MB</label><input type="number" id="mb" oninput="uniCalc('mb','data')"></div>
+                    <div class="input-group"><label>DATA GB</label><input type="number" id="gb" oninput="uniCalc('gb','data')"></div>
+                </div>
             </div>
         </div>
     </div>
 </div>
 
 <script>
-    const currencies = ["USD", "INR", "EUR", "GBP", "JPY", "AUD", "CAD", "CHF", "CNY", "HKD", "NZD", "SEK", "KRW", "SGD", "AED", "SAR", "KWD", "QAR", "ZAR", "PKR", "MYR", "THB", "IDR"];
+    function switchTab(el, targetId) {
+        const parent = el.parentElement;
+        parent.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+        el.classList.add('active');
+        const container = parent.closest('.card');
+        container.querySelectorAll('.tab-content').forEach(c => c.classList.add('hidden'));
+        document.getElementById(targetId).classList.remove('hidden');
+    }
 
+    const curs = ["USD","INR","EUR","GBP","JPY","DKK","AUD","CAD","AED","SAR","SGD","CNY","ZAR","QAR","KWD","SEK"];
     window.onload = () => {
-        const fromSel = document.getElementById('fromCur');
-        const toSel = document.getElementById('toCur');
-        currencies.sort().forEach(cur => {
-            fromSel.add(new Option(cur, cur));
-            toSel.add(new Option(cur, cur));
-        });
-        fromSel.value = "INR";
-        toSel.value = "USD";
+        const f = document.getElementById('fromCur'), t = document.getElementById('toCur');
+        curs.sort().forEach(c => { f.add(new Option(c,c)); t.add(new Option(c,c)); });
+        f.value="INR"; t.value="USD";
     };
 
     async function fetchRates() {
         const amt = document.getElementById('amtIn').value;
-        const f = document.getElementById('fromCur').value;
-        const t = document.getElementById('toCur').value;
+        const from = document.getElementById('fromCur').value, to = document.getElementById('toCur').value;
         const out = document.getElementById('fxOut');
         if(!amt) return;
-        out.innerText = "CALCULATING...";
+        out.innerText = "WAIT...";
         try {
-            const r = await fetch(`https://open.er-api.com/v6/latest/${f}`);
+            const r = await fetch(`https://open.er-api.com/v6/latest/${from}`);
             const d = await r.json();
-            const rate = d.rates[t];
-            out.innerText = `${(amt * rate).toLocaleString(undefined, {minimumFractionDigits: 2})} ${t}`;
-            document.getElementById('fxMeta').innerText = `LIVE RATE: 1 ${f} = ${rate.toFixed(4)} ${t}`;
+            const rate = d.rates[to];
+            out.innerText = `${(amt * rate).toLocaleString(undefined, {minimumFractionDigits:2})} ${to}`;
+            document.getElementById('fxMeta').innerText = `1 ${from} = ${rate.toFixed(4)} ${to}`;
         } catch (e) { out.innerText = "OFFLINE"; }
     }
 
-    const landMap = { guntha:101.17, bigha:2529.28, biswa:126.44, kanal:505.85, acre:4046.86, hectare:10000, sqm:1, sqy:0.8361, sqf:0.0929 };
+    const landMap = { guntha:101.17, bigha:2529.28, biswa:126.44, kanal:505.85, cent:40.47, ground:222.97, acre:4046.86, hectare:10000, sqm:1, sqy:0.8361, sqf:0.0929 };
     const uniMap = {
-        len: { inch:0.0254, feet:0.3048, cm:0.01, m:1, km:1000, mi:1609.34 },
-        mass: { kg:1, lb:0.453592 },
-        vol: { l:1, gal:3.78541 }
+        len: { inch:0.0254, m:1 },
+        mass: { kg:1, tola:0.01166 },
+        vol: { l:1, gal:3.78541 },
+        data: { mb:1, gb:1024 },
+        power: { watts:1, hp:745.7, joule:1, kwh:3600000 },
+        press: { psi:6894.76, bar:100000, pascal:1, atm:101325 },
+        time: { sec:1, min:60, hour:3600, day:86400 }
     };
 
     function landCalc(id) {
         const v = parseFloat(document.getElementById(id).value);
-        if(isNaN(v)) return clearSet(Object.keys(landMap));
+        if(isNaN(v)) return clearIds(Object.keys(landMap));
         const base = v * landMap[id];
-        Object.keys(landMap).forEach(k => { if(k!==id) document.getElementById(k).value = Number((base/landMap[k]).toPrecision(8)); });
+        Object.keys(landMap).forEach(k => { if(k!==id) document.getElementById(k).value = Number((base/landMap[k]).toPrecision(6)); });
     }
 
     function uniCalc(id, cat) {
         const v = parseFloat(document.getElementById(id).value);
         const map = uniMap[cat];
-        if(isNaN(v)) return clearSet(Object.keys(map));
+        if(isNaN(v)) return clearIds(Object.keys(map));
         const base = v * map[id];
-        Object.keys(map).forEach(k => { if(k!==id) document.getElementById(k).value = Number((base/map[k]).toPrecision(8)); });
+        Object.keys(map).forEach(k => { if(k!==id) document.getElementById(k).value = Number((base/map[k]).toPrecision(6)); });
     }
 
-    function clearSet(ids) { ids.forEach(id => document.getElementById(id).value = ""); }
+    function tempCalc(id) {
+        const v = parseFloat(document.getElementById(id).value);
+        if(isNaN(v)) { document.getElementById('c').value = ''; document.getElementById('f').value = ''; return; }
+        if(id==='c') document.getElementById('f').value = Number(((v * 9/5) + 32).toFixed(2));
+        else document.getElementById('c').value = Number(((v - 32) * 5/9).toFixed(2));
+    }
+
+    function clearIds(ids) { ids.forEach(id => { const el = document.getElementById(id); if(el) el.value = ""; }); }
 </script>
 
 </body>
